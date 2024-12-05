@@ -7,7 +7,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.commit
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.recordkeeper.cycling.CyclingFragment
 import com.example.recordkeeper.databinding.ActivityMainBinding
 import com.example.recordkeeper.running.CYCLING
@@ -17,8 +19,7 @@ import com.example.recordkeeper.running.RUNNING_EVENTS
 import com.example.recordkeeper.running.RunningFragment
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.snackbar.Snackbar
-
-
+import com.google.android.material.tabs.TabLayoutMediator
 
 
 class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListener {
@@ -33,6 +34,13 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
             putString(CYCLING, CYCLING_EVENTS)
             putString(RUNNING, RUNNING_EVENTS)
         }
+//        binding.viewPager2.adapter = PagerAdapter(this)
+//        TabLayoutMediator(binding.tabLayout, binding.viewPager2) { tab, position ->
+//            when(position) {
+//                0 -> tab.text = RUNNING
+//                1 -> tab.text = CYCLING
+//            }
+//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -129,6 +137,14 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
             for (distance in distances) {
                 FileService.getRunningFile(this, distance)?.edit { clear() }
             }
+        }
+    }
+    private inner class PagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
+        override fun getItemCount(): Int = 2
+
+        override fun createFragment(position: Int): Fragment = when (position) {
+            0 -> RunningFragment()
+            else -> CyclingFragment()
         }
     }
 }
