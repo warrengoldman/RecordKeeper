@@ -20,6 +20,7 @@ import com.example.recordkeeper.running.RunningFragment
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
+import java.util.Locale
 
 
 class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListener {
@@ -28,19 +29,19 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.bottomNav.setOnItemSelectedListener(this)
+//        binding.bottomNav.setOnItemSelectedListener(this)
         val file = FileService.getFile(this, "events")
         file?.edit {
             putString(CYCLING, CYCLING_EVENTS)
             putString(RUNNING, RUNNING_EVENTS)
         }
-//        binding.viewPager2.adapter = PagerAdapter(this)
-//        TabLayoutMediator(binding.tabLayout, binding.viewPager2) { tab, position ->
-//            when(position) {
-//                0 -> tab.text = RUNNING
-//                1 -> tab.text = CYCLING
-//            }
-//        }
+        binding.viewPager2.adapter = PagerAdapter(this)
+        TabLayoutMediator(binding.tabLayout, binding.viewPager2) { tab, position ->
+            when(position) {
+                0 -> tab.text = RUNNING.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
+                1 -> tab.text = CYCLING.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
+            }
+        }.attach()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -55,7 +56,7 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
             R.id.reset_all -> resetAll()
             else -> super.onOptionsItemSelected(item)
         }
-        onNavigationItemSelected(binding.bottomNav.selectedItemId)
+//        onNavigationItemSelected(binding.bottomNav.selectedItemId)
         return result
     }
 
@@ -73,7 +74,7 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
 
     private fun setFragment(fragment: Fragment): Boolean {
         supportFragmentManager.commit {
-            replace(R.id.frame_content, fragment)
+//            replace(R.id.frame_content, fragment)
         }
         return true
     }
@@ -118,10 +119,10 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
         return true
     }
     private fun postClear() {
-        val snackbar = Snackbar.make(binding.frameContent, "Records cleared successfully!", Snackbar.LENGTH_LONG)
-        snackbar.anchorView = binding.bottomNav
-        snackbar.show()
-        onNavigationItemSelected(binding.bottomNav.selectedItemId)
+//        val snackbar = Snackbar.make(binding.frameContent, "Records cleared successfully!", Snackbar.LENGTH_LONG)
+//        snackbar.anchorView = binding.bottomNav
+//        snackbar.show()
+//        onNavigationItemSelected(binding.bottomNav.selectedItemId)
     }
     private fun clearCyclingFile() {
         val distances = FileService.getFile(this, "events")?.getString(CYCLING, null)?.split(",")?.toTypedArray()

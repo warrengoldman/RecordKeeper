@@ -22,7 +22,10 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/bike_heading"
                 android:scaleType="centerCrop"
-                android:contentDescription="@string/cycling"/>
+                android:contentDescription="@string/cycling"
+                android:background="@drawable/border_wrap"
+                android:padding="3dp"
+                android:cropToPadding="true"/>
 
             <View
                 android:layout_width="match_parent"
