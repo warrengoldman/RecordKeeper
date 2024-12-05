@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -38,8 +39,14 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
         binding.viewPager2.adapter = PagerAdapter(this)
         TabLayoutMediator(binding.tabLayout, binding.viewPager2) { tab, position ->
             when(position) {
-                0 -> tab.text = RUNNING.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
-                1 -> tab.text = CYCLING.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
+                0 -> {
+                    tab.text = RUNNING.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
+                    tab.icon = AppCompatResources.getDrawable(this, R.drawable.running_24)
+                }
+                1 -> {
+                    tab.text = CYCLING.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
+                    tab.icon = AppCompatResources.getDrawable(this, R.drawable.bike_24)
+                }
             }
         }.attach()
     }
